@@ -1,0 +1,9 @@
+#! /usr/bin/env bash
+
+if [[ $NODE_ENV = "development" ]]; then
+  echo "Starting DEVELOPMENT worker"
+  exec node_modules/nodemon/bin/nodemon.js --exitcrash --signal SIGTERM src/worker.js
+else
+  echo "Starting PRODUCTION worker"
+  exec node src/worker.js
+fi

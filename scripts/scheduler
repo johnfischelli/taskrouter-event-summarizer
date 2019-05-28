@@ -1,0 +1,9 @@
+#! /usr/bin/env bash
+
+if [[ $NODE_ENV = "development" ]]; then
+  echo "Starting DEVELOPMENT scheduler"
+  exec node_modules/nodemon/bin/nodemon.js --exitcrash --signal SIGTERM src/scheduler.js
+else
+  echo "Starting PRODUCTION scheduler"
+  exec node src/scheduler.js
+fi

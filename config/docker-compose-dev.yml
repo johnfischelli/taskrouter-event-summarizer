@@ -1,0 +1,99 @@
+version: "3"
+services:
+  redis:
+    container_name: ttra-redis
+    image: redis:5.0.3
+    command:
+      "redis-server --appendonly yes"
+    volumes:
+      - $LOCAL_REDIS_DIR:/data
+    ports:
+      - "6379:6379"
+    restart: always
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+  postgres:
+    container_name: ttra-postgres
+    image: postgres:11.1
+    volumes:
+      - $LOCAL_POSTGRES_DIR:/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_USER: $POSTGRES_USER
+      PGDATA: /data
+    restart: always
+  app:
+    container_name: ttra-server
+    image: twilio/taskrouter-event-summarizer
+    depends_on:
+      - redis
+      - postgres
+    build: ../
+    command:
+      "/app/scripts/server"
+    ports:
+      - 3000:8080
+      - 6999:6999
+    volumes:
+      - ../src:/app/src
+      - ../reports:/app/reports
+      - ../scripts:/app/scripts
+      - ../migrations:/app/migrations
+      - ../config:/app/config
+    environment:
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=postgres
+    env_file:
+     - ./development.env
+  worker:
+    container_name: ttra-worker
+    image: twilio/taskrouter-event-summarizer
+    depends_on:
+      - redis
+      - postgres
+    command:
+      "/app/scripts/worker"
+    volumes:
+      - ../src:/app/src
+      - ../reports:/app/reports
+      - ../scripts:/app/scripts
+      - ../migrations:/app/migrations
+      - ../config:/app/config
+    environment:
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=postgres
+    env_file:
+     - ./development.env
+    restart: always
+  scheduler:
+    container_name: ttra-scheduler
+    image: twilio/taskrouter-event-summarizer
+    depends_on:
+      - redis
+      - postgres
+    command:
+      "/app/scripts/scheduler"
+    volumes:
+      - ../src:/app/src
+      - ../reports:/app/reports
+      - ../scripts:/app/scripts
+      - ../migrations:/app/migrations
+      - ../config:/app/config
+    depends_on:
+      - worker
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=postgres
+    env_file:
+     - ./development.env
+    restart: always

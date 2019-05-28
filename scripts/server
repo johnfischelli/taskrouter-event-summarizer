@@ -1,0 +1,9 @@
+#! /usr/bin/env bash
+
+if [[ $NODE_ENV = "development" ]]; then
+  echo "Starting DEVELOPMENT server"
+  exec node_modules/nodemon/bin/nodemon.js  --signal SIGTERM src/server.js
+else
+  echo "Starting PRODUCTION server"
+  exec node src/server.js
+fi

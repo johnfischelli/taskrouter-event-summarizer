@@ -1,0 +1,50 @@
+{
+  "name": "TaskRouter Event Summarizer",
+  "description": "An application to recieve Twilio TaskRouter event callbacks and summarize them into distinct records of what happened during that task.",
+  "repository": "https://github.com/johnfischelli/taskrouter-event-summarizer",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["node", "express", "twilio", "taskrouter"],
+  "addons": [
+    {
+      "plan": "heroku-redis:premium-0"
+    },
+    {
+      "plan": "heroku-postgresql:hobby-dev",
+      "options": {
+        "version": "11"
+      }
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "env": {
+    "TR_WORKSPACE_SID": {
+      "description": "TaskRouter Workspace Sid",
+      "value": "CHANGEME",
+      "required": true
+    },
+    "TWILIO_ACCOUNT_SID": {
+      "description": "Twilio Console Project Account Sid",
+      "value": "CHANGEME",
+      "required": true
+    },
+    "TWILIO_AUTH_TOKEN": {
+      "description": "Twilio Console Project Auth Token",
+      "value": "CHANGEME",
+      "required": true
+    },
+    "TWILIO_CHAT_SERVICE_SID": {
+      "description": "The chat service sid that ships with Flex. This is so we can retrieve chat transcripts when chat tasks finish.",
+      "value": "CHANGEME",
+      "required": true
+    },
+    "TWILIO_SYNC_SERVICE_SID": {
+      "description": "The sync service sid that ships with Flex. This is how we push data to realtime dashboards.",
+      "value": "CHANGEME",
+      "required": true
+    }
+  }
+}
