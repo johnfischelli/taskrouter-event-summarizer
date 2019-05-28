@@ -13,7 +13,7 @@ We can do really cool things, like calculate your contact center's capacity util
 
 This application is intended to be a launching point, where you and your team will take its foundations and make it your own. Reveal whatever metric you like, as long as you can capture the data, you can show it!
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/johnfischelli/twilio-taskrouter-realtime-analytics/tree/master)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/johnfischelli/taskrouter-event-summarizer/tree/master)
 
 *Note: If you do deploy this application to Heroku, or some other production environment, don't forget to run your [database migrations](#run-the-database-migrations).*
 
